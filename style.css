@@ -1,0 +1,13 @@
+body {
+    background-color:#e5e7eb;
+}
+
+.container {
+    display:flex;
+    flex-direction: column;
+}
+
+.grid-container {
+    display: grid;
+    margin:auto;
+}
