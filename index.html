@@ -9,13 +9,15 @@
 </head>
 <body>
     <div class="container">
-        <h1>Etch-a-sketch</h1>
-        <div class="grid-container"></div>
         <div class="options-wrapper">
+            <h1>Etch-a-sketch</h1>
             <label for="colorpicker">Color Picker:</label>
             <input type="color" id="colorpicker" value="#FF0000">
-            <button id="clear">Clear</button>
+            <button id="clear">Clear Canvas</button>
+            <label for="grid-size">Grid Size: <span id="grid-size-value"></span></label>
+            <input type="range" id="grid-size" min="10" max="60" value="16" step="10">
         </div>
+        <div class="grid-container"></div>
     </div>
     <script src="script.js"></script>
 </body>

@@ -1,13 +1,22 @@
-let gridSize = 16;
-let gridArea = gridSize * gridSize;
-let mouseDown = false;
-
 const gridContainer = document.querySelector(".grid-container");
 const colorPicker = document.getElementById("colorpicker");
 const clearButton = document.getElementById("clear");
+const gridSizeSlider = document.getElementById("grid-size");
+const gridSizeValue = document.getElementById("grid-size-value");
+
+let gridSize = 16;
+let gridArea = gridSize * gridSize;
+let mouseDown = false;
 let brushColor = colorPicker.value;
 
-gridContainer.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+createGrid(gridArea);
+
+gridSizeSlider.addEventListener("input", function() {
+    gridSize = this.value;
+    gridSizeValue.textContent = gridSize;
+    gridArea = gridSize * gridSize;
+    createGrid(gridArea);
+});
 
 document.body.onmousedown = function() { 
     mouseDown = true;
@@ -22,14 +31,13 @@ colorPicker.addEventListener("input", function() {
 });
 
 clearButton.addEventListener("click", function() {
-    gridContainer.replaceChildren();
-    createGrid();
+    createGrid(gridArea);
 });
 
-createGrid();
-
 // Create the grid
-function createGrid() {
+function createGrid(gridArea) {
+    gridContainer.replaceChildren();
+    gridContainer.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
     for (let i = 0; i < gridArea; i++) {
         const gridItem = document.createElement('div');
         gridItem.className = "grid-item";
@@ -38,13 +46,13 @@ function createGrid() {
     }
 
     document.querySelectorAll(".grid-item").forEach(item => {
+        item.addEventListener("click", () => {
+            item.style.backgroundColor = brushColor;
+        });
         item.addEventListener("mouseover", () => {
             if (mouseDown) {
                 item.style.backgroundColor = brushColor;
             }
         });
-        item.addEventListener("click", () => {
-            item.style.backgroundColor = brushColor;
-        })
     });
 }    
