@@ -3,11 +3,24 @@ const colorPicker = document.getElementById("colorpicker");
 const clearButton = document.getElementById("clear");
 const gridSizeSlider = document.getElementById("grid-size");
 const gridSizeValue = document.getElementById("grid-size-value");
+const rainbowModeCheckbox = document.getElementById("rainbowmode");
 
 let gridSize = 16;
 let gridArea = gridSize * gridSize;
 let mouseDown = false;
 let brushColor = colorPicker.value;
+let rainbowMode = false;
+
+rainbowModeCheckbox.addEventListener('change', e => {
+    if(e.target.checked === true) {
+        rainbowMode = true;
+    }
+    if(e.target.checked === false) {
+        rainbowMode = false;
+    }
+});
+
+getRainbowColor = () => (brushColor = "#" + Math.floor(Math.random()*16777215).toString(16));
 
 createGrid(gridArea);
 
@@ -24,6 +37,7 @@ function createGrid(gridArea) {
     gridSizeValue.textContent = gridSize + " x " + gridSize;
     gridArea = gridSize * gridSize;
     gridContainer.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+
     for (let i = 0; i < gridArea; i++) {
         const gridItem = document.createElement('div');
         gridItem.className = "grid-item";
@@ -33,11 +47,23 @@ function createGrid(gridArea) {
 
     document.querySelectorAll(".grid-item").forEach(item => {
         item.addEventListener("mousedown", () => {
-            item.style.backgroundColor = brushColor;
+            if (rainbowMode) {
+                getRainbowColor();
+                item.style.backgroundColor = brushColor;
+            } else {
+                brushColor = colorPicker.value;
+                item.style.backgroundColor = brushColor;
+            }
         });
         item.addEventListener("mouseover", () => {
             if (mouseDown) {
-                item.style.backgroundColor = brushColor;
+                if (rainbowMode) {
+                    getRainbowColor();
+                    item.style.backgroundColor = brushColor;
+                } else {
+                    brushColor = colorPicker.value;
+                    item.style.backgroundColor = brushColor;
+                }
             }
         });
     });
