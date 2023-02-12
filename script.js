@@ -11,32 +11,18 @@ let brushColor = colorPicker.value;
 
 createGrid(gridArea);
 
-gridSizeSlider.addEventListener("input", function() {
-    gridSize = this.value;
-    gridSizeValue.textContent = gridSize;
-    gridArea = gridSize * gridSize;
-    createGrid(gridArea);
-});
-
-document.body.onmousedown = function() { 
-    mouseDown = true;
-}
-
-document.body.onmouseup = function() {
-    mouseDown = false;
-}
-
-colorPicker.addEventListener("input", function() {
-    brushColor = colorPicker.value;
-});
-
-clearButton.addEventListener("click", function() {
-    createGrid(gridArea);
-});
+gridSizeSlider.addEventListener("input", () => (createGrid(gridArea)));
+document.body.onmousedown = () => (mouseDown = true);
+document.body.onmouseup = () => (mouseDown = false);
+colorPicker.addEventListener("input", () => (brushColor = colorPicker.value));
+clearButton.addEventListener("click", () => (createGrid(gridArea)));
 
 // Create the grid
 function createGrid(gridArea) {
     gridContainer.replaceChildren();
+    gridSize = gridSizeSlider.value;
+    gridSizeValue.textContent = gridSize + " x " + gridSize;
+    gridArea = gridSize * gridSize;
     gridContainer.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
     for (let i = 0; i < gridArea; i++) {
         const gridItem = document.createElement('div');
@@ -46,7 +32,7 @@ function createGrid(gridArea) {
     }
 
     document.querySelectorAll(".grid-item").forEach(item => {
-        item.addEventListener("click", () => {
+        item.addEventListener("mousedown", () => {
             item.style.backgroundColor = brushColor;
         });
         item.addEventListener("mouseover", () => {
